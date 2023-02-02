@@ -1,5 +1,6 @@
 package com.example.Notebook.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,13 +17,24 @@ import java.io.Serializable;
 public class Task implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
     @Size(min = 5, message = "Name is too short")
     private final String name;
 
-    @Column
     private final String description;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JsonIgnoreProperties(value = {"authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled"})
+    private final User user;
+
+//    @Override
+//    public String toString() {
+//        return "Task{" +
+//                "name='" + name + '\'' +
+//                ", description='" + description + '\'' +
+//                ", user=" + user +
+//                '}';
+//    }
 }
